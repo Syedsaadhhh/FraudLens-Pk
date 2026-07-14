@@ -1,58 +1,70 @@
-# FraudLens PK
+# FraudLens PK — AI Digital Scam Shield for Pakistan
 
-**AI Digital Scam Shield for Pakistan**
-
-FraudLens PK is a hackathon MVP that helps Pakistani users check suspicious WhatsApp/SMS messages, URLs, emails, QR text, and screenshots. The app uses AI to detect scam type, risk level, red flags, Urdu/English explanation, safe actions, and a simple scan report.
-
-## Core Demo Flow
-
-```text
-Suspicious message / URL / screenshot
-        ↓
-AI analysis
-        ↓
-Risk score + scam type
-        ↓
-Red flags + Urdu/English explanation
-        ↓
-Safe action checklist
-        ↓
-History / report
-```
-
-## MVP Features
-
-- Scam message scanner
-- URL risk checker
-- AI risk scoring: Low / Medium / High
-- Scam type detection: OTP fraud, fake job, parcel scam, payment scam, phishing, prize scam, investment scam
-- Red flag highlights
-- Urdu + English explanation
-- Safe actions and do-not-do checklist
-- Basic dashboard and scan history
-- Optional screenshot OCR and report export if time allows
+A hackathon frontend project that helps users detect online scams before they click, pay, or share
+sensitive information. Frontend only — no backend, dummy data throughout.
 
 ## Tech Stack
 
-- Frontend: Next.js + Tailwind CSS + shadcn/ui
-- Backend: Next.js API Routes
-- AI: Gemini or OpenAI API
-- Database: Supabase/Firebase or local mock data first
-- OCR: Tesseract.js or OCR API, optional
-- Deployment: Vercel
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- shadcn/ui-style components
+- Lucide React icons
+- Framer Motion
+- Recharts (dashboard chart)
 
-## Team Roles
+## Getting Started
 
-- **Saad:** Product direction, scam logic, AI prompts, demo flow, pitch, final QA
-- **Maryam:** Frontend UI, landing page, analyzer UI, dashboard UI, documentation, submission sheet
-- **Mohsin:** Backend API, AI integration, database/history, Vercel deployment
-
-## Build Rule
-
-Do not overbuild. First make the main flow work perfectly:
-
-```text
-Paste message → Analyze → Risk score → Scam type → Red flags → Urdu/English explanation → Safe actions
+```bash
+npm install
+npm run dev
 ```
 
-After this works, then add dashboard, history, OCR, and report export.
+Then open **http://localhost:3000** in your browser.
+
+## Project Structure
+
+```
+app/
+  page.js              -> Landing page ("/")
+  analyze/page.js       -> Analyzer page ("/analyze")
+  dashboard/page.js     -> Dashboard page ("/dashboard")
+  layout.js             -> Root layout (shared HTML shell)
+  globals.css           -> Tailwind + global styles
+  icon.svg               -> Favicon
+
+components/
+  ui/                   -> Reusable primitives (Button, Badge, Card, Textarea)
+  shared/               -> Navbar, Footer, small shared bits
+  landing/               -> Landing page sections (Hero, Stats, Features, ...)
+  analyzer/              -> Analyzer form + result cards
+  dashboard/              -> Dashboard widgets (stats, table, chart, tip)
+
+data/
+  dummyData.js           -> All dummy content (stats, scam types, history rows, etc.)
+
+lib/
+  analyzeText.js          -> Rule-based "AI" analyzer (keyword matching, no backend)
+  styleHelpers.js          -> Shared Tailwind class helpers
+  useCountUp.js            -> Count-up animation hook
+  utils.js                 -> cn() class-merging helper
+```
+
+## How the Analyzer Works (no backend)
+
+`lib/analyzeText.js` scans whatever text you paste for keywords tied to common Pakistani
+scam patterns (OTP fraud, bank phishing, fake jobs, parcel scams, prize scams, payment scams,
+investment scams, QR scams, malware links, impersonation). It always returns a complete result:
+risk score, risk level, scam type, confidence, red flags, English + Roman Urdu explanations,
+safe actions, and a "do not" list — even for random text, which falls back to a low-risk result.
+
+## Scripts
+
+- `npm run dev` — start the local dev server
+- `npm run build` — production build
+- `npm run start` — run the production build
+- `npm run lint` — run ESLint
+
+## Repository
+
+https://github.com/Syedsaadhhh/FraudLens-Pk
