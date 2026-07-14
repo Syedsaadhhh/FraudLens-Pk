@@ -9,9 +9,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Environment variables
+# Environment variables — real keys are NEVER committed
 .env
 .env.*
+!.env.example
 
 # IDEs and editors
 .vscode/
