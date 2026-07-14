@@ -93,9 +93,9 @@ def assert_all_fields(body: dict, case_name: str):
     """Assert all 9 required fields are present."""
     missing = [f for f in REQUIRED_FIELDS if f not in body]
     if missing:
-        print(f"  ❌ FAILED — missing fields: {missing}")
+        print(f"  [FAIL] Missing fields: {missing}")
         return False
-    print(f"  ✅ All 9 fields present")
+    print(f"  [PASS] All 9 fields present")
     return True
 
 
@@ -113,7 +113,7 @@ def run_scam_tests():
         status_code, body = post_analyze(case["text"])
 
         if status_code != 200:
-            print(f"  ❌ FAILED — HTTP {status_code}: {body}")
+            print(f"  [FAIL] HTTP {status_code}: {body}")
             failed += 1
             continue
 
@@ -142,10 +142,10 @@ def test_empty_input():
     print("Testing: Empty input validation")
     status_code, body = post_analyze("")
     if status_code == 400 and "detail" in body:
-        print(f"  ✅ Correct 400 error: {body['detail']}")
+        print(f"  [PASS] Correct 400 error: {body['detail']}")
         return True
     else:
-        print(f"  ❌ FAILED — expected 400, got {status_code}: {body}")
+        print(f"  [FAIL] Expected 400, got {status_code}: {body}")
         return False
 
 
@@ -157,8 +157,8 @@ if __name__ == "__main__":
     empty_ok = test_empty_input()
 
     print(f"\n{'='*60}")
-    print(f"RESULTS: {passed}/5 scam cases passed | Empty input test: {'✅' if empty_ok else '❌'}")
+    print(f"RESULTS: {passed}/5 scam cases passed | Empty input test: {'[PASS]' if empty_ok else '[FAIL]'}")
     if failed == 0 and empty_ok:
-        print("✅ ALL TESTS PASSED")
+        print("[SUCCESS] ALL TESTS PASSED")
     else:
-        print(f"❌ {failed} test(s) failed")
+        print(f"[FAILED] {failed} test(s) failed")
