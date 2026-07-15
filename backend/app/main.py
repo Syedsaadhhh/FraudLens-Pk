@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.api import api_router
 from app.core.config import settings
+from app.db.database import init_db
+from app.routers import history
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -19,6 +21,25 @@ app.add_middleware(
 
 # Include api router with prefix /api
 app.include_router(api_router, prefix=settings.API_V1_STR)
+# Include history router (prefix /api/history is defined inside the router)
+app.include_router(history.router)
+
+@app.on_event("startup")
+def on_startup():
+    try:
+        init_db()
+    except Exception as e:
+        print("\n" + "="*80)
+        print("DATABASE INIT ERROR: Failed to connect or initialize the PostgreSQL database.")
+        print(f"DATABASE_URL: {settings.DATABASE_URL}")
+        print("Please check that:")
+        print("  1. PostgreSQL is running locally or at the specified host.")
+        print("  2. The database named 'fraudlens' exists.")
+        print("  3. Your username and password in .env are correct.")
+        print(f"Detailed Error: {e}")
+        print("="*80 + "\n")
+        # Still raise the error to let uvicorn report startup failure cleanly
+        raise
 
 @app.get("/")
 def root():
