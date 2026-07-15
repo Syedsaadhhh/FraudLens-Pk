@@ -24,6 +24,8 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 # Include history router (prefix /api/history is defined inside the router)
 app.include_router(history.router)
 
+import threading
+
 @app.on_event("startup")
 def on_startup():
     try:
@@ -38,7 +40,7 @@ def on_startup():
         print("  3. Your username and password in .env are correct.")
         print(f"Detailed Error: {e}")
         print("="*80 + "\n")
-        # Still raise the error to let uvicorn report startup failure cleanly
+        # Still raise the error to let uvicorn report startup failure cleanly and exit
         raise
 
 @app.get("/")
