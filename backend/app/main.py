@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.api import api_router
 from app.core.config import settings
 from app.db.database import init_db
-from app.routers import history
+from app.routers import history, report
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -23,6 +23,7 @@ app.add_middleware(
 app.include_router(api_router, prefix=settings.API_V1_STR)
 # Include history router (prefix /api/history is defined inside the router)
 app.include_router(history.router)
+app.include_router(report.router)
 
 import threading
 

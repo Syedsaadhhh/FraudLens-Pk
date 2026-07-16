@@ -20,3 +20,14 @@ def get_scan_by_id(session: Session, scan_id: str) -> Optional[ScanRecordDB]:
     statement = select(ScanRecordDB).where(ScanRecordDB.id == scan_id)
     result = session.exec(statement).first()
     return result
+
+def update_report_text(session: Session, scan_id: str, report_text: str) -> Optional[ScanRecordDB]:
+    """Update the reportText field of an existing scan record. Overwrites if already set."""
+    record = get_scan_by_id(session, scan_id)
+    if not record:
+        return None
+    record.reportText = report_text
+    session.add(record)
+    session.commit()
+    session.refresh(record)
+    return record
