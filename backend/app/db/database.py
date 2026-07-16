@@ -17,9 +17,8 @@ if not database_url:
 # Let's keep the user's config value directly.
 engine = create_engine(
     database_url,
-    echo=False,  # Set to True if we want to log SQL queries
-    pool_pre_ping=True,  # Check connection health before executing queries
-    connect_args={"connect_timeout": 5}  # Timeout after 5 seconds to prevent indefinite startup hangs
+    echo=False,
+    connect_args={"check_same_thread": False}  # Required for SQLite with FastAPI
 )
 
 def init_db() -> None:
